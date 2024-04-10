@@ -96,6 +96,26 @@ class ListaTareas:
         else:
             print("Índice de tarea inválido.")
 
+class Documento:
+    def __init__(self, nombre, contenido):
+        self.nombre = nombre
+        self.contenido = contenido
+
+class GestionDocumentos:
+    def __init__(self):
+        self.documentos = []
+
+    def almacenar_documento(self, nombre, contenido):
+        nuevo_documento = Documento(nombre, contenido)
+        self.documentos.append(nuevo_documento)
+        print("Documento almacenado correctamente.")
+
+    def descargar_documento(self, nombre_documento):
+        for documento in self.documentos:
+            if documento.nombre == nombre_documento:
+                return documento.contenido
+        return None
+
 
 def registrar_usuario(usuarios):
     print("\nRegistro de Nuevo Usuario:")
@@ -219,23 +239,56 @@ def menu_lista_tareas(lista_tareas):
         else:
             print("Opción no válida. Por favor ingrese un número del 1 al 5.")
 
+def menu_gestion_documentos(gestion_documentos):
+    while True:
+        print("\nMenú de Gestión de Documentos:")
+        print("1. Almacenar documento")
+        print("2. Descargar documento")
+        print("3. Mostrar lista de documentos")
+        print("4. Volver al menú principal")
+
+        opcion = input("Ingrese el número de la opción deseada: ")
+
+        if opcion == "1":
+            nombre = input("Ingrese el nombre del documento: ")
+            contenido = input("Ingrese el contenido del documento: ")
+            gestion_documentos.almacenar_documento(nombre, contenido)
+        elif opcion == "2":
+            nombre_documento = input("Ingrese el nombre del documento que desea descargar: ")
+            documento = gestion_documentos.descargar_documento(nombre_documento)
+            if documento:
+                print(f"Contenido del documento {nombre_documento}: {documento}")
+            else:
+                print("El documento especificado no existe.")
+        elif opcion == "3":
+            print("Lista de documentos almacenados:")
+            for documento in gestion_documentos.documentos:
+                print(documento.nombre)
+        elif opcion == "4":
+            print("Volviendo al menú principal...")
+            break
+        else:
+            print("Opción no válida. Por favor ingrese un número del 1 al 4.")
+
 
 def mostrar_menu():
     print("\nMenú de Usuario:")
     print("1. Registrar nuevo usuario")
     print("2. Borrar usuario existente")
     print("3. Modificar información de usuario")
-    print("4.opciones de contrato")
+    print("4. opciones de contrato")
     print("5. Realizar pago de renta")
     print("6. Notificar incidencia")
     print("7. Lista de Tareas")
-    print("8. Salir")
+    print("8. Documentos")
+    print("9. Salir")
 
 def main():
     usuarios = []
     propiedades = []
     gestor_contratos = GestorContratos()
     lista_tareas = ListaTareas()
+    gestion_documentos = GestionDocumentos()
 
     while True:
         mostrar_menu()
@@ -263,10 +316,12 @@ def main():
         elif opcion == "7":
             menu_lista_tareas(lista_tareas)
         elif opcion == "8":
+            menu_gestion_documentos(gestion_documentos)
+        elif opcion == "9":
             print("Saliendo del programa...")
             break
         else:
-            print("Opción no válida. Por favor ingrese un número del 1 al 10.")
+            print("Opción no válida. Por favor ingrese un número del 1 al 9.")
 
 if __name__ == "__main__":
     main()
