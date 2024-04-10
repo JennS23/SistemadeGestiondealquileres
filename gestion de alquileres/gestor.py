@@ -191,7 +191,7 @@ def menu_gestor_contratos(gestor_contratos):
 
                 gestor_contratos.modificar_contrato(indice_contrato, nuevo_contrato)
             else:
-                print("Índice de contrato inválido."
+                print("Índice de contrato inválido.")
         elif opcion == "3":
                 gestor_contratos.mostrar_contratos()
                 indice_contrato = int(input("Ingrese el índice del contrato que desea eliminar: ")) - 1
