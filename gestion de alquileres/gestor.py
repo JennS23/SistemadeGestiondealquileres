@@ -187,8 +187,7 @@ def menu_gestor_contratos(gestor_contratos):
                 nueva_fianza = float(input("Ingrese el nuevo monto de la fianza: "))
 
                 # Crear una instancia de ContratoAlquiler con la nueva información
-                nuevo_contrato = ContratoAlquiler(nuevo_arrendatario, nuevo_propiedad, nueva_fecha_inicio,
-                                                  nueva_fecha_fin, nueva_renta_mensual, nueva_fianza)
+                nuevo_contrato = ContratoAlquiler(nuevo_arrendatario, nuevo_propiedad, nueva_fecha_inicio, nueva_fecha_fin, nueva_renta_mensual, nueva_fianza)
 
                 gestor_contratos.modificar_contrato(indice_contrato, nuevo_contrato)
             else:
