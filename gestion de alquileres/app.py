@@ -1,4 +1,4 @@
-from main import SistemaGestionAlquileres
+from main import *
 import tkinter as tk
 from tkinter import messagebox
 import datetime
@@ -51,13 +51,20 @@ class App:
             messagebox.showerror("Error", "Por favor ingrese un nombre de usuario")
 
     def registrar_propiedad(self):
-        direccion_propiedad = self.entry_direccion_propiedad.get()
-        if direccion_propiedad:
-            self.sistema_alquileres.registrar_propiedad(direccion_propiedad)
-            messagebox.showinfo("Registro Exitoso", "Propiedad registrada exitosamente")
-            self.entry_direccion_propiedad.delete(0, tk.END)
-        else:
-            messagebox.showerror("Error", "Por favor ingrese una dirección de propiedad")
+        def registrar_propiedad(self):
+            direccion_propiedad = self.entry_direccion_propiedad.get()
+            descripcion = "Descripción temporal"  # Aquí debes obtener la descripción de alguna manera
+            numero_habitaciones = 0  # Aquí debes obtener el número de habitaciones de alguna manera
+            superficie = 0.0  # Aquí debes obtener la superficie de alguna manera
+            arrendador = "Arrendador temporal"  # Aquí debes obtener el arrendador de alguna manera
+            if direccion_propiedad:
+                self.sistema_alquileres.registrar_propiedad(direccion_propiedad, descripcion, numero_habitaciones,
+                                                            superficie, arrendador)
+                messagebox.showinfo("Registro Exitoso", "Propiedad registrada exitosamente")
+                self.entry_direccion_propiedad.delete(0, tk.END)
+            else:
+                messagebox.showerror("Error", "Por favor ingrese una dirección de propiedad")
+
 
     def crear_contrato(self):
         nombre_usuario = self.entry_nombre_usuario.get()
