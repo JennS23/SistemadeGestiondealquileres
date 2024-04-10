@@ -26,17 +26,16 @@ class ContratoAlquiler:
         return f"Contrato de alquiler de {self.propiedad} para {self.arrendatario}"
 
 class GestorContratos:
-    def _init_(self):
+    def __init__(self):
         self.contratos = []
 
-    def crear_contrato(self, arrendatario, propiedad, fecha_inicio, fecha_fin, renta_mensual, fianza):
-        nuevo_contrato = ContratoAlquiler(arrendatario, propiedad, fecha_inicio, fecha_fin, renta_mensual, fianza)
-        self.contratos.append(nuevo_contrato)
+    def crear_contrato(self, contrato):
+        self.contratos.append(contrato)
         print("Contrato creado exitosamente.")
 
-    def modificar_contrato(self, indice, nuevo_arrendatario):
+    def modificar_contrato(self, indice, nuevo_contrato):
         if 0 <= indice < len(self.contratos):
-            self.contratos[indice].arrendatario = nuevo_arrendatario
+            self.contratos[indice] = nuevo_contrato
             print("Contrato modificado exitosamente.")
         else:
             print("Índice de contrato inválido.")
@@ -48,6 +47,15 @@ class GestorContratos:
         else:
             print("Índice de contrato inválido.")
 
+    def mostrar_contratos(self):
+        if self.contratos:
+            print("Lista de contratos:")
+            for i, contrato in enumerate(self.contratos):
+                print(f"{i + 1}. {contrato}")
+        else:
+            print("No hay contratos registrados.")
+
+
 class PagoRenta:
     def __init__(self, fecha_pago, importe):
         self.fecha_pago = fecha_pago
@@ -58,6 +66,35 @@ class Incidencia:
         self.descripcion = descripcion
         self.fecha = fecha
         self.estado = estado
+
+class ListaTareas:
+    def __init__(self):
+        self.tareas = []
+
+    def agregar_tarea(self, descripcion, estado="Pendiente"):
+        self.tareas.append({"descripcion": descripcion, "estado": estado})
+
+    def marcar_como_realizada(self, indice):
+        if 0 <= indice < len(self.tareas):
+            self.tareas[indice]["estado"] = "Realizada"
+            print("Tarea marcada como realizada.")
+        else:
+            print("Índice de tarea inválido.")
+
+    def mostrar_tareas(self):
+        if self.tareas:
+            print("Lista de tareas:")
+            for i, tarea in enumerate(self.tareas):
+                print(f"{i + 1}. {tarea['descripcion']} - Estado: {tarea['estado']}")
+        else:
+            print("No hay tareas en la lista.")
+
+    def eliminar_tarea(self, indice):
+        if 0 <= indice < len(self.tareas):
+            del self.tareas[indice]
+            print("Tarea eliminada correctamente.")
+        else:
+            print("Índice de tarea inválido.")
 
 
 def registrar_usuario(usuarios):
@@ -95,24 +132,110 @@ def modificar_informacion_usuario(usuarios):
             return
     print(f"No se encontró ningún usuario con el nombre {nombre}.")
 
+def menu_gestor_contratos(gestor_contratos):
+    while True:
+        print("\nMenú de Gestor de Contratos:")
+        print("1. Crear contrato")
+        print("2. Modificar contrato")
+        print("3. Eliminar contrato")
+        print("4. Mostrar lista de contratos")
+        print("5. Volver al menú principal")
+
+        opcion = input("Ingrese el número de la opción deseada: ")
+
+        if opcion == "1":
+            arrendatario = input("Ingrese el nombre del arrendatario: ")
+            propiedad = input("Ingrese la dirección de la propiedad: ")
+            fecha_inicio = input("Ingrese la fecha de inicio del contrato (YYYY-MM-DD): ")
+            fecha_fin = input("Ingrese la fecha de fin del contrato (YYYY-MM-DD): ")
+            renta_mensual = float(input("Ingrese la renta mensual: "))
+            fianza = float(input("Ingrese el monto de la fianza: "))
+
+            # Crear una instancia de ContratoAlquiler con la información proporcionada
+            nuevo_contrato = ContratoAlquiler(arrendatario, propiedad, fecha_inicio, fecha_fin, renta_mensual, fianza)
+
+            gestor_contratos.crear_contrato(nuevo_contrato)
+        elif opcion == "2":
+            gestor_contratos.mostrar_contratos()
+            indice_contrato = int(input("Ingrese el índice del contrato que desea modificar: ")) - 1
+            if 0 <= indice_contrato < len(gestor_contratos.contratos):
+                nuevo_arrendatario = input("Ingrese el nuevo arrendatario: ")
+                nuevo_propiedad = input("Ingrese la nueva dirección de la propiedad: ")
+                nueva_fecha_inicio = input("Ingrese la nueva fecha de inicio del contrato (YYYY-MM-DD): ")
+                nueva_fecha_fin = input("Ingrese la nueva fecha de fin del contrato (YYYY-MM-DD): ")
+                nueva_renta_mensual = float(input("Ingrese la nueva renta mensual: "))
+                nueva_fianza = float(input("Ingrese el nuevo monto de la fianza: "))
+
+                # Crear una instancia de ContratoAlquiler con la nueva información
+                nuevo_contrato = ContratoAlquiler(nuevo_arrendatario, nuevo_propiedad, nueva_fecha_inicio,
+                                                  nueva_fecha_fin, nueva_renta_mensual, nueva_fianza)
+
+                gestor_contratos.modificar_contrato(indice_contrato, nuevo_contrato)
+            else:
+                print("Índice de contrato inválido."
+        elif opcion == "3":
+                gestor_contratos.mostrar_contratos()
+                indice_contrato = int(input("Ingrese el índice del contrato que desea eliminar: ")) - 1
+                if 0 <= indice_contrato < len(gestor_contratos.contratos):
+                    gestor_contratos.eliminar_contrato(indice_contrato)
+                    print("Contrato eliminado exitosamente.")
+
+                else:
+                    print("Índice de contrato inválido.")
+
+        elif opcion == "4":
+            gestor_contratos.mostrar_contratos()
+        elif opcion == "5":
+            print("Volviendo al menú principal...")
+            break
+        else:
+            print("Opción no válida. Por favor ingrese un número del 1 al 5.")
+
+def menu_lista_tareas(lista_tareas):
+    while True:
+        print("\nMenú de Lista de Tareas:")
+        print("1. Agregar tarea")
+        print("2. Marcar tarea como realizada")
+        print("3. Mostrar lista de tareas")
+        print("4. Eliminar tarea")
+        print("5. Volver al menú principal")
+
+        opcion = input("Ingrese el número de la opción deseada: ")
+
+        if opcion == "1":
+            descripcion = input("Ingrese la descripción de la tarea: ")
+            lista_tareas.agregar_tarea(descripcion)
+        elif opcion == "2":
+            indice = int(input("Ingrese el índice de la tarea a marcar como realizada: ")) - 1
+            lista_tareas.marcar_como_realizada(indice)
+        elif opcion == "3":
+            lista_tareas.mostrar_tareas()
+        elif opcion == "4":
+            indice = int(input("Ingrese el índice de la tarea a eliminar: ")) - 1
+            lista_tareas.eliminar_tarea(indice)
+        elif opcion == "5":
+            print("Volviendo al menú principal...")
+            break
+        else:
+            print("Opción no válida. Por favor ingrese un número del 1 al 5.")
+
 
 def mostrar_menu():
     print("\nMenú de Usuario:")
     print("1. Registrar nuevo usuario")
     print("2. Borrar usuario existente")
     print("3. Modificar información de usuario")
-    print("4. Crear contrato de alquiler")
-    print("5. Modificar contrato de alquiler")
-    print("6. Eliminar contrato de alquiler")
-    print("7. Ver información del contrato de alquiler")
-    print("8. Realizar pago de renta")
-    print("9. Notificar incidencia")
-    print("10. Salir")
+    print("4.opciones de contrato")
+    print("5. Realizar pago de renta")
+    print("6. Notificar incidencia")
+    print("7. Lista de Tareas")
+    print("8. Salir")
 
 def main():
     usuarios = []
     propiedades = []
     gestor_contratos = GestorContratos()
+    lista_tareas = ListaTareas()
 
     while True:
         mostrar_menu()
@@ -125,27 +248,21 @@ def main():
         elif opcion == "3":
             modificar_informacion_usuario(usuarios)
         elif opcion == "4":
-            crear_contrato_alquiler(usuarios, propiedades, gestor_contratos)
+            menu_gestor_contratos(gestor_contratos)
         elif opcion == "5":
-            modificar_contrato_alquiler(gestor_contratos)
-        elif opcion == "6":
-            eliminar_contrato_alquiler(gestor_contratos)
-        elif opcion == "7":
-            ver_informacion_contrato(gestor_contratos)
-        elif opcion == "8":
-            # Realizar pago de renta
             fecha_pago = datetime.datetime.now()
             importe = float(input("Ingrese el importe del pago de renta: "))
             pago_renta = PagoRenta(fecha_pago, importe)
             print("Pago de renta realizado exitosamente.")
-        elif opcion == "9":
+        elif opcion == "6":
             # Notificar incidencia
             descripcion = input("Describa la incidencia: ")
             fecha_incidencia = datetime.datetime.now()
             incidencia = Incidencia(descripcion, fecha_incidencia, "Pendiente")
             print("Incidencia notificada correctamente.")
-        elif opcion == "10":
-            # Salir del programa
+        elif opcion == "7":
+            menu_lista_tareas(lista_tareas)
+        elif opcion == "8":
             print("Saliendo del programa...")
             break
         else:
