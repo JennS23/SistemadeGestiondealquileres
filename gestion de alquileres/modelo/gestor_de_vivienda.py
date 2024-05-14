@@ -21,3 +21,6 @@ class HouseManager:
             return True  # Casa eliminada correctamente
         else:
             return False  # La casa no existe
+
+    def get_house(self, name):
+        return self.houses.get(name, None)
