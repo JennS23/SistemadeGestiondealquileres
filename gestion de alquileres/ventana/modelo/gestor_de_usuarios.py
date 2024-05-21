@@ -23,3 +23,12 @@ class UserManager:
         else:
             return "El usuario no existe."
 
+    def login_user(self, user_id, password):
+        if user_id in self.users:
+            if self.users[user_id].password == password:
+                return "Inicio de sesión exitoso."
+            else:
+                return "Contraseña incorrecta."
+        else:
+            return "El usuario no existe."
+
