@@ -3,6 +3,9 @@ from tkinter import messagebox
 from modelo.gestor_de_usuarios import *
 from modelo.gestor_de_vivienda import *
 
+#Al organizar las funciones en cada uno de sus gestores no funciona al pagar sale como si no hubiera una vivienda registrada
+
+
 # Funciones de la interfaz
 def register_user():
     user_id = entry_user_id.get()
