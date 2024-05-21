@@ -121,7 +121,14 @@ def show_rentals():
     rentals = rental_manager.get_rentals_for_house(house_name)
     rentals_text = "\n".join([f"{r[0]} pagó {r[2]} el {r[1]}" for r in rentals])
     label_rentals.config(text=rentals_text)
+def show_houses():
+    houses_text = "\n".join([f"{house.name} ({house.address})" for house in house_manager.houses.values()])
+    label_house_message.config(text=houses_text)
 
+def remove_house():
+    house_name = entry_house_name.get()
+    message = house_manager.remove_house(house_name)
+    label_house_message.config(text=message)
 def open_rental_manager():
     rental_window = tk.Toplevel(root)
     rental_window.title("Gestor de Alquileres")
@@ -149,6 +156,12 @@ def open_rental_manager():
 
     add_house_button = tk.Button(frame_house, text="Añadir Casa", command=add_house)
     add_house_button.pack(pady=5)
+
+    show_houses_button = tk.Button(frame_house, text="Mostrar Casas", command=show_houses)
+    show_houses_button.pack(pady=5)
+
+    remove_house_button = tk.Button(frame_house, text="Eliminar Casa", command=remove_house)
+    remove_house_button.pack(pady=5)
 
     label_house_message = tk.Label(frame_house, text="")
     label_house_message.pack(pady=10)
