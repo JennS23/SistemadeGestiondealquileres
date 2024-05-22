@@ -42,6 +42,8 @@ class RentalManager:
             self.rentals[house_name] = [(renter, payment_date, amount)]
         return "Pago de alquiler registrado exitosamente."
 
+    def get_rentals_for_house(self, house_name):
+        return self.rentals.get(house_name, [])
 
 house_manager = HouseManager()
 rental_manager = RentalManager()

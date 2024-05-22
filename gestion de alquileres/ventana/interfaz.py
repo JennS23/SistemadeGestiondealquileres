@@ -1,83 +1,10 @@
 import tkinter as tk
 from tkinter import messagebox
+from modelo.gestor_de_usuarios import *
+from modelo.gestor_de_vivienda import *
 
-class User:
-    def __init__(self, user_id, password):
-        self.user_id = user_id
-        self.password = password
+#Al organizar las funciones en cada uno de sus gestores no funciona al pagar sale como si no hubiera una vivienda registrada
 
-class UserManager:
-    def __init__(self):
-        self.users = {}
-
-    def register_user(self, user_id, password):
-        if user_id in self.users:
-            return "El usuario ya existe. Por favor, elige otro ID."
-        else:
-            self.users[user_id] = User(user_id, password)
-            return "Usuario registrado exitosamente."
-
-    def delete_user(self, user_id):
-        if user_id in self.users:
-            del self.users[user_id]
-            return "Usuario eliminado exitosamente."
-        else:
-            return "El usuario no existe."
-
-    def login_user(self, user_id, password):
-        if user_id in self.users:
-            if self.users[user_id].password == password:
-                return "Inicio de sesión exitoso."
-            else:
-                return "Contraseña incorrecta."
-        else:
-            return "El usuario no existe."
-
-class House:
-    def __init__(self, address, name, rent_price):
-        self.address = address
-        self.name = name
-        self.rent_price = rent_price
-
-class HouseManager:
-    def __init__(self):
-        self.houses = {}
-
-    def add_house(self, address, name, rent_price):
-        if name in self.houses:
-            return "La casa ya existe."
-        else:
-            self.houses[name] = House(address, name, rent_price)
-            return "Casa añadida correctamente."
-
-    def remove_house(self, name):
-        if name in self.houses:
-            del self.houses[name]
-            return "Casa eliminada correctamente."
-        else:
-            return "La casa no existe."
-
-    def get_house(self, name):
-        return self.houses.get(name, None)
-
-class RentalManager:
-    def __init__(self):
-        self.rentals = {}
-
-    def rent_house(self, house_name, renter, payment_date, amount):
-        house = house_manager.get_house(house_name)
-        if not house:
-            return "La vivienda no está registrada."
-        if amount != house.rent_price:
-            return f"El monto del pago debe ser exactamente {house.rent_price}."
-        if house_name in self.rentals:
-            self.rentals[house_name].append((renter, payment_date, amount))
-        else:
-            self.rentals[house_name] = [(renter, payment_date, amount)]
-        return "Pago de alquiler registrado exitosamente."
-
-    def get_rentals_for_house(self, house_name):
-        return self.rentals.get(house_name, [])
 
 # Funciones de la interfaz
 def register_user():
@@ -121,6 +48,7 @@ def show_rentals():
     rentals = rental_manager.get_rentals_for_house(house_name)
     rentals_text = "\n".join([f"{r[0]} pagó {r[2]} el {r[1]}" for r in rentals])
     label_rentals.config(text=rentals_text)
+
 def show_houses():
     houses_text = "\n".join([f"{house.name} ({house.address})" for house in house_manager.houses.values()])
     label_house_message.config(text=houses_text)
@@ -129,10 +57,11 @@ def remove_house():
     house_name = entry_house_name.get()
     message = house_manager.remove_house(house_name)
     label_house_message.config(text=message)
+
 def open_rental_manager():
     rental_window = tk.Toplevel(root)
     rental_window.title("Gestor de Alquileres")
-    rental_window.geometry("600x600")  # Ancho x Alto
+    rental_window.geometry("600x800")  # Ancho x Alto
 
     # Marco para registrar casas
     frame_house = tk.Frame(rental_window)
@@ -234,9 +163,11 @@ login_button = tk.Button(frame, text="Iniciar Sesión", command=login_user)
 login_button.pack(pady=5)
 
 # Crear instancias de UserManager, HouseManager y RentalManager
-user_manager = UserManager()
-house_manager = HouseManager()
-rental_manager = RentalManager()
+
 
 # Iniciar el bucle principal de la interfaz
 root.mainloop()
+
+user_manager = UserManager()
+house_manager = HouseManager()
+rental_manager = RentalManager()
